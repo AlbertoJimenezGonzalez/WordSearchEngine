@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Text.RegularExpressions;
+﻿using System.Text.RegularExpressions;
 
 namespace WordSearchEngine
 {
@@ -10,9 +7,10 @@ namespace WordSearchEngine
 		public string FileName { get; set; }
 		public string FileContent { get; set; }
 
-		public int GetNumberOfMatches(string wordToSearch)
+		public int GetNumberOfMatches(string wordToSearch, bool wholeWord)
 		{
-			return Regex.Matches(FileContent, wordToSearch, RegexOptions.IgnoreCase).Count;
+			var pattern = wholeWord ? @"\b" + wordToSearch + @"\b" : wordToSearch;
+			return Regex.Matches(FileContent, pattern, RegexOptions.IgnoreCase).Count;
 		}
 	}
 }

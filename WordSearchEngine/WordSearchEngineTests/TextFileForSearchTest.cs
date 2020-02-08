@@ -6,7 +6,7 @@ namespace WordSearchEngineTests
 	public class TextFileForSearchTest
 	{
 		ITextFileForSearch textFileForSearch = null;
-
+		
 		[SetUp]
 		public void Setup()
 		{
@@ -20,7 +20,7 @@ namespace WordSearchEngineTests
 			textFileForSearch.FileContent = FakeContentFile.GetEmptyContentFile();
 
 			//Act
-			var result = textFileForSearch.GetNumberOfMatches("hola");
+			var result = textFileForSearch.GetNumberOfMatches("hola",true);
 
 			//Assert
 			Assert.AreEqual(0, result);
@@ -33,7 +33,7 @@ namespace WordSearchEngineTests
 			textFileForSearch.FileContent = FakeContentFile.GetContentFile();
 
 			//Act
-			var result = textFileForSearch.GetNumberOfMatches("hola");
+			var result = textFileForSearch.GetNumberOfMatches("hola",true);
 
 			//Assert
 			Assert.AreEqual(0, result);
@@ -46,10 +46,36 @@ namespace WordSearchEngineTests
 			textFileForSearch.FileContent = FakeContentFile.GetContentFile();
 
 			//Act
-			var result = textFileForSearch.GetNumberOfMatches("prueba");
+			var result = textFileForSearch.GetNumberOfMatches("prueba",true);
 
 			//Assert
 			Assert.AreEqual(3, result);
+		}
+
+		[Test]
+		public void NonEmptyFileContentWith2MatchesShouldGive2MatchesIfWholeWordIsNotConsidered()
+		{
+			//Arrange
+			textFileForSearch.FileContent = FakeContentFile.GetContentFile();
+
+			//Act
+			var result = textFileForSearch.GetNumberOfMatches("debe",false);
+
+			//Assert
+			Assert.AreEqual(2, result);
+		}
+
+		[Test]
+		public void NonEmptyFileContentWith2MatchesShouldGive1MatchIfWholeWordIsConsidered()
+		{
+			//Arrange
+			textFileForSearch.FileContent = FakeContentFile.GetContentFile();
+
+			//Act
+			var result = textFileForSearch.GetNumberOfMatches("debe", true);
+
+			//Assert
+			Assert.AreEqual(1, result);
 		}
 	}
 }
