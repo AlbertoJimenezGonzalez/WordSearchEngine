@@ -15,7 +15,7 @@ namespace WordSearchEngine
 
 		public int LoadFilesFromFolder(string pathToFolder)
 		{
-			throw new NotImplementedException();
+			return 0;
 		}
 
 		public string GetTopSearchWordMatches(string wordToSearch)
