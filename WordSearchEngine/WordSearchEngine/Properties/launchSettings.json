@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "WordSearchEngine": {
+      "commandName": "Project",
+      "commandLineArgs": "C:\\Pruebas"
+    }
+  }
+}
