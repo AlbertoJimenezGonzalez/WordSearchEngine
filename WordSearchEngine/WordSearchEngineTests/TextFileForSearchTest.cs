@@ -5,18 +5,32 @@ namespace WordSearchEngineTests
 {
 	public class TextFileForSearchTest
 	{
+		ITextFileForSearch textFileForSearch = null;
+
 		[SetUp]
 		public void Setup()
 		{
+			textFileForSearch = TextFileForSearchFactory.CreateTextFileForSearch(string.Empty, string.Empty);
 		}
 
 		[Test]
 		public void EmptyFileContentShoudGiveZeroMatches()
 		{
 			//Arrange
-			ITextFileForSearch textFileForSearch = new TextFileForSearch();
-			textFileForSearch.FileContent = string.Empty;
-			textFileForSearch.FileName = string.Empty;
+			textFileForSearch.FileContent = FakeContentFile.GetEmptyContentFile();
+
+			//Act
+			var result = textFileForSearch.GetNumberOfMatches("hola");
+
+			//Assert
+			Assert.AreEqual(0, result);
+		}
+
+		[Test]
+		public void NonEmptyFileContentWithNoMatchesShouldGiveZeroMatches()
+		{
+			//Arrange
+			textFileForSearch.FileContent = FakeContentFile.GetContentFile();
 
 			//Act
 			var result = textFileForSearch.GetNumberOfMatches("hola");
