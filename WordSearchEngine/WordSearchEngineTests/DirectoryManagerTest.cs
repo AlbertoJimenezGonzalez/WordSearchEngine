@@ -47,12 +47,29 @@ namespace WordSearchEngineTests
 			}
 		}
 
+		private void CreateAndInflateFiles(string path, int numberOfFiles)
+		{
+			for (int i = 0; i < numberOfFiles; i++)
+			{
+				var fileName = $"TextFile{i}.txt";
+				var nameToCreate = $"{path}\\{fileName}";
+				if (File.Exists(nameToCreate))
+				{
+					File.Delete(nameToCreate);
+				}
+				var file = File.CreateText(nameToCreate);
+				file.Write(FakeContentFile.GetContentFile());
+				file.Flush();
+				file.Close();
+			}
+		}
+
 		[Test]
 		public void DirectoryManagerShouldReturn0FilesReadWhenDirectoryIsEmpty()
 		{
 			//Arrange
 			string dirPath = SetEnvironment();
-			IDirectoryManager directoryManager = new DirectoryManager();
+			IDirectoryManager directoryManager = new DirectoryManager(10);
 
 			//Act
 			var numFiles = directoryManager.LoadFilesFromFolder(dirPath);
@@ -70,7 +87,7 @@ namespace WordSearchEngineTests
 			//Arrange
 			var dirPath = SetEnvironment();
 			CreateFiles(dirPath, 2);
-			IDirectoryManager directoryManager = new DirectoryManager();
+			IDirectoryManager directoryManager = new DirectoryManager(10);
 
 			//Act
 			var numFiles = directoryManager.LoadFilesFromFolder(dirPath);
@@ -88,7 +105,7 @@ namespace WordSearchEngineTests
 			//Arrange
 			var dirPath = SetEnvironment();
 			CreateFiles(dirPath, 2);
-			IDirectoryManager directoryManager = new DirectoryManager();
+			IDirectoryManager directoryManager = new DirectoryManager(10);
 
 			//Act
 			var numFiles = directoryManager.LoadFilesFromFolder(dirPath);
@@ -98,6 +115,27 @@ namespace WordSearchEngineTests
 			//Assert
 			Assert.AreEqual(2, numFiles);
 			Assert.AreEqual("no matches found\r\n", stringResult);
+
+			//Cleaning the environment
+			DeleteDirectory(dirPath);
+		}
+
+		[Test]
+		public void DirectoryManagerShouldReturnSomeInformationWhendDirectoryHas2NonEmptyFiles()
+		{
+			//Arrange
+			var dirPath = SetEnvironment();
+			CreateAndInflateFiles(dirPath, 2);
+			IDirectoryManager directoryManager = new DirectoryManager(10);
+
+			//Act
+			var numFiles = directoryManager.LoadFilesFromFolder(dirPath);
+
+			var stringResult = directoryManager.GetTopSearchWordMatches("prueba");
+
+			//Assert
+			Assert.AreEqual(2, numFiles);
+			Assert.AreNotEqual("no matches found\r\n", stringResult);
 
 			//Cleaning the environment
 			DeleteDirectory(dirPath);

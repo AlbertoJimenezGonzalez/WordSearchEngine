@@ -11,9 +11,10 @@ namespace WordSearchEngine
 		private readonly List<ITextFileForSearch> filesInFolder;
 		private readonly int topElements;
 
-		public DirectoryManager()
+		public DirectoryManager(int topNumber)
 		{
 			filesInFolder = new List<ITextFileForSearch>();
+			topElements = topNumber;
 		}
 
 		public int LoadFilesFromFolder(string pathToFolder)
