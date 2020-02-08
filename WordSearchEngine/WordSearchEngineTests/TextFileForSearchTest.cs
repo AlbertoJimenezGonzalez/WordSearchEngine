@@ -38,5 +38,18 @@ namespace WordSearchEngineTests
 			//Assert
 			Assert.AreEqual(0, result);
 		}
+
+		[Test]
+		public void NonEmptyFileContentWith3MatchesShouldGive3Matches()
+		{
+			//Arrange
+			textFileForSearch.FileContent = FakeContentFile.GetContentFile();
+
+			//Act
+			var result = textFileForSearch.GetNumberOfMatches("prueba");
+
+			//Assert
+			Assert.AreEqual(3, result);
+		}
 	}
 }
