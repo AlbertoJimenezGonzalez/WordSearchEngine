@@ -32,7 +32,7 @@ namespace WordSearchEngineTests
 			return dirPath;
 		}
 
-		private void CreateFiles(string path, int numberOfFiles)
+		private void CreateFiles(string path, int numberOfFiles, bool informContent)
 		{
 			for (int i = 0; i < numberOfFiles; i++)
 			{
@@ -43,23 +43,11 @@ namespace WordSearchEngineTests
 					File.Delete(nameToCreate);
 				}
 				var file = File.CreateText(nameToCreate);
-				file.Close();
-			}
-		}
-
-		private void CreateAndInflateFiles(string path, int numberOfFiles)
-		{
-			for (int i = 0; i < numberOfFiles; i++)
-			{
-				var fileName = $"TextFile{i}.txt";
-				var nameToCreate = $"{path}\\{fileName}";
-				if (File.Exists(nameToCreate))
+				if (informContent)
 				{
-					File.Delete(nameToCreate);
+					file.Write(FakeContentFile.GetContentFile());
+					file.Flush();
 				}
-				var file = File.CreateText(nameToCreate);
-				file.Write(FakeContentFile.GetContentFile());
-				file.Flush();
 				file.Close();
 			}
 		}
@@ -86,7 +74,7 @@ namespace WordSearchEngineTests
 		{
 			//Arrange
 			var dirPath = SetEnvironment();
-			CreateFiles(dirPath, 2);
+			CreateFiles(dirPath, 2, false);
 			IDirectoryManager directoryManager = new DirectoryManager(10);
 
 			//Act
@@ -104,7 +92,7 @@ namespace WordSearchEngineTests
 		{
 			//Arrange
 			var dirPath = SetEnvironment();
-			CreateFiles(dirPath, 2);
+			CreateFiles(dirPath, 2, false);
 			IDirectoryManager directoryManager = new DirectoryManager(10);
 
 			//Act
@@ -125,7 +113,7 @@ namespace WordSearchEngineTests
 		{
 			//Arrange
 			var dirPath = SetEnvironment();
-			CreateAndInflateFiles(dirPath, 2);
+			CreateFiles(dirPath, 2, true);
 			IDirectoryManager directoryManager = new DirectoryManager(10);
 
 			//Act
